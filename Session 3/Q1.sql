@@ -1,14 +1,8 @@
-WITH first_purchase AS (
-    SELECT
-        user_id,
-        MIN(created_at) AS first_date
-    FROM amazon_transactions
-    GROUP BY user_id
-)
-SELECT DISTINCT
-    a.user_id
-FROM amazon_transactions a
-JOIN first_purchase f
-    ON a.user_id = f.user_id
-WHERE a.created_at > f.first_date
-  AND a.created_at <= f.first_date + INTERVAL '7 day';
+SELECT
+    cust_id,
+    SUM(total_order_cost) AS revenue
+FROM orders
+WHERE order_date >= '2019-03-01'
+  AND order_date < '2019-04-01'
+GROUP BY cust_id
+ORDER BY revenue DESC;
